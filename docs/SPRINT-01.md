@@ -1,80 +1,68 @@
-# Sprint 01: Planificación y Fundación del Proyecto
+# Sprint 1: Reemplazar Google Forms y Google Sheets por un Sistema Web
 
-Este documento detalla los objetivos, historias de usuario y tareas técnicas planificadas para el **Sprint 1** del sistema **Solicitud de Repuestos CPS**.
+Este documento detalla los objetivos, roles, funcionalidades y estados definidos para el **Sprint 1** del sistema **Solicitud de Repuestos CPS**, con el propósito de migrar el flujo actual basado en Google Forms y Google Sheets a una plataforma web propia y centralizada.
 
 ---
 
-## 🎯 Objetivos del Sprint
+## 🎯 Objetivo
 
-1. **Establecer la Arquitectura Base**: Configurar el entorno de desarrollo local, base de datos y estructura de carpetas.
-2. **Autenticación y Roles**: Implementar el sistema de inicio de sesión y gestión de roles básicos (Solicitante, Aprobador, Almacén).
-3. **Módulo de Solicitud (Básico)**: Permitir a un usuario solicitante crear una solicitud de repuesto simple y ver su historial de solicitudes.
+*   **Reemplazar Google Forms y Google Sheets por un sistema web dinámico**, mejorando el control, la trazabilidad de los estados de solicitud y la experiencia de usuario.
 
 ---
 
 ## 👥 Roles del Sistema
 
-- **🧑‍💼 Solicitante (Operador/Técnico)**: Persona que necesita el repuesto y registra la solicitud.
-- **🧑‍💻 Aprobador (Supervisor/Jefe)**: Persona encargada de revisar, autorizar o rechazar la solicitud.
-- **📦 Administrador de Almacén**: Encargado de despachar el repuesto una vez aprobado.
+*   **👑 Administrador**: Gestión integral del sistema, control de usuarios/clientes y supervisión de solicitudes.
+*   **🧑‍🔧 Técnico**: Personal que realiza las solicitudes de repuestos en campo o taller y realiza su seguimiento.
+*   **📦 Almacenista**: Responsable de la gestión física de los repuestos, actualización de inventarios y despacho.
 
 ---
 
-## 📖 Historias de Usuario
+## 🛠️ Funcionalidades Planificadas
 
-### HU-01: Inicio de Sesión Seguro
-> **Como** usuario del sistema (Solicitante, Aprobador, Almacén),  
-> **quiero** iniciar sesión con mis credenciales,  
-> **para** acceder a las funciones correspondientes a mi rol.
+### 🔑 Autenticación (Login)
+*   **Iniciar sesión**: Acceso seguro al sistema mediante credenciales de usuario.
+*   **Cerrar sesión**: Salida segura del sistema para proteger la sesión del usuario.
 
-*   **Criterios de Aceptación:**
-    *   [ ] Formulario con campos de correo/usuario y contraseña.
-    *   [ ] Validación de credenciales contra la base de datos.
-    *   [ ] Redirección automática según el rol asignado.
-    *   [ ] Mensaje claro en caso de credenciales incorrectas.
+### 🏢 Gestión de Clientes
+*   **Crear**: Registrar nuevos clientes en el sistema.
+*   **Editar**: Modificar la información de clientes existentes.
+*   **Eliminar**: Dar de baja o eliminar registros de clientes.
 
-### HU-02: Creación de Solicitud de Repuesto
-> **Como** Solicitante,  
-> **quiero** registrar una nueva solicitud de repuesto especificando cantidad, número de parte y descripción,  
-> **para** que pueda ser revisada por mi supervisor.
-
-*   **Criterios de Aceptación:**
-    *   [ ] Formulario con campos: Código de máquina/equipo, Número de parte, Descripción, Cantidad, Prioridad (Alta/Media/Baja).
-    *   [ ] Guardar la solicitud con estado inicial `Pendiente`.
-    *   [ ] Validar que todos los campos obligatorios estén llenos antes del envío.
-
-### HU-03: Historial de Solicitudes
-> **Como** Solicitante,  
-> **quiero** ver una lista de mis solicitudes realizadas y su estado actual,  
-> **para** hacer seguimiento del proceso.
-
-*   **Criterios de Aceptación:**
-    *   [ ] Tabla/Lista que muestre: ID, Fecha, Máquina, Estado (`Pendiente`, `Aprobado`, `Rechazado`, `Despachado`).
-    *   [ ] Filtros básicos por estado de solicitud.
+### 📝 Gestión de Solicitudes
+*   **Crear solicitud**: Formulario para registrar una nueva necesidad de repuesto.
+*   **Adjuntar foto**: Permitir la carga de imágenes como referencia visual del repuesto solicitado.
+*   **Cambiar estado**: Flujo de transición para actualizar el progreso de la solicitud.
+*   **Ver historial**: Registro cronológico de los cambios y movimientos de cada solicitud.
 
 ---
 
-## 🛠️ Tareas Técnicas
+## 🚦 Flujo de Estados
 
-### 🏗️ Infraestructura y Arquitectura
-- [ ] Definir el stack tecnológico definitivo (ej. React + Node.js, Next.js, Django, etc.).
-- [ ] Diseñar el esquema de base de datos relacional (Tablas: `Usuarios`, `Roles`, `Solicitudes`, `Detalle_Solicitudes`).
-- [ ] Configurar las variables de entorno y conexión a la base de datos.
+Las solicitudes pasarán por los siguientes estados definidos en el flujo de trabajo:
 
-### 🔑 Backend (API)
-- [ ] Crear los endpoints de autenticación (`/api/auth/login`, `/api/auth/logout`).
-- [ ] Crear el endpoint para registrar solicitudes (`POST /api/solicitudes`).
-- [ ] Crear el endpoint para obtener el historial del usuario (`GET /api/solicitudes/usuario/:id`).
+1.  **⏳ Pendiente**: Estado inicial tras el registro de la solicitud por parte del Técnico.
+2.  **🔍 En revisión**: La solicitud está siendo evaluada por el equipo de supervisión o compras.
+3.  **🛒 En compra**: Se ha procedido a la adquisición externa del repuesto requerido.
+4.  **✅ Aprobado**: La solicitud ha sido autorizada y está lista para despacho.
+5.  **🚚 Entregado**: El repuesto ha sido despachado y entregado al solicitante.
+6.  **❌ Cancelado**: La solicitud ha sido anulada o rechazada.
+
+---
+
+## 📈 Tareas Técnicas del Sprint
+
+### 🏗️ Base de Datos e Infraestructura
+*   [ ] Diseñar el modelo de datos relacional para `Usuarios`, `Clientes`, `Solicitudes`, `Historial_Estados` y `Fotos`.
+*   [ ] Configurar el almacenamiento de archivos (Local o Cloud Storage) para las fotos adjuntas.
+
+### 🔑 Desarrollo Backend
+*   [ ] Endpoints de Login y Logout.
+*   [ ] CRUD completo de Clientes (`GET`, `POST`, `PUT`, `DELETE` `/api/clientes`).
+*   [ ] Rutas de Solicitudes (Creación con upload de fotos, listado general, actualización de estado y consulta de historial).
 
 ### 🎨 Frontend (UI/UX)
-- [ ] Implementar la pantalla de Login con diseño responsive y moderno.
-- [ ] Crear la vista del Dashboard principal del Solicitante.
-- [ ] Diseñar e implementar el formulario de solicitud con validaciones interactivas.
-- [ ] Crear la tabla del historial de solicitudes con estados visuales coloridos.
-
----
-
-## 📈 Entregables del Sprint
-*   [ ] Base de datos local configurada y migrada.
-*   [ ] Código del backend y frontend integrado en la rama `main`.
-*   [ ] Despliegue de prueba local o en staging.
+*   [ ] Pantallas de inicio de sesión con diseño moderno y adaptativo (móvil y escritorio).
+*   [ ] Módulo de administración de Clientes (tabla dinámica con formulario interactivo).
+*   [ ] Formulario de creación de Solicitudes con previsualización de la foto adjunta.
+*   [ ] Panel de control (Dashboard) con filtros por Estado y visualización de historial.
